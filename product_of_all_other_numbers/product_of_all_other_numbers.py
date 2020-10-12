@@ -2,16 +2,30 @@
 Input: a List of integers
 Returns: a List of integers
 '''
+# First-pass solution
+# def product_of_all_other_numbers(arr):
+#     # Your code here
+#     newArr = []
+#     for i in range(len(arr)):
+#         prod = 1
+#         for j in range(len(arr)):
+#             if j != i:
+#                 prod *= arr[j]
+#         newArr.append(prod)
+#     return newArr
+
+# optimized solution O(log n)
 def product_of_all_other_numbers(arr):
-    # Your code here
-    newArr = []
-    for i in range(len(arr)):
-        prod = 1
-        for j in range(len(arr)):
-            if j != i:
-                prod *= arr[j]
-        newArr.append(prod)
-    return newArr
+
+    # products ([:i] for pos. keys, [i:]-neg. keys)
+    products = {0: 1, -1: 1}   
+    n = len(arr)
+    for i in range(1, n):
+        # prod of elements left of i 
+        products[i] = arr[i-1] * products[i-1]  
+        # prod of elements right of i
+        products[-i-1] = arr[-i] * products[-i]  
+    return [products[i]*products[-n+i] for i in range(n)]
 
 if __name__ == '__main__':
     # Use the main function to test your implementation
